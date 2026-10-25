@@ -1,8 +1,0 @@
-C:\Users\krist\source\repos\ElectroShopAP\ElectroShopAP\obj\Debug\net10.0\ElectroShopAP.csproj.AssemblyReference.cache
-C:\Users\krist\source\repos\ElectroShopAP\ElectroShopAP\obj\Debug\net10.0\rpswa.dswa.cache.json
-C:\Users\krist\source\repos\ElectroShopAP\ElectroShopAP\obj\Debug\net10.0\ElectroShopAP.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\krist\source\repos\ElectroShopAP\ElectroShopAP\obj\Debug\net10.0\ElectroShopAP.AssemblyInfoInputs.cache
-C:\Users\krist\source\repos\ElectroShopAP\ElectroShopAP\obj\Debug\net10.0\ElectroShopAP.AssemblyInfo.cs
-C:\Users\krist\source\repos\ElectroShopAP\ElectroShopAP\obj\Debug\net10.0\ElectroShopAP.csproj.CoreCompileInputs.cache
-C:\Users\krist\source\repos\ElectroShopAP\ElectroShopAP\obj\Debug\net10.0\ElectroShopAP.MvcApplicationPartsAssemblyInfo.cs
-C:\Users\krist\source\repos\ElectroShopAP\ElectroShopAP\obj\Debug\net10.0\ElectroShopAP.MvcApplicationPartsAssemblyInfo.cache

@@ -1,4 +1,0 @@
-<Solution>
-  <Project Path="ElectroShopAP/ElectroShopAPI.csproj" />
-  <Project Path="TestElectroShopAPI/TestElectroShopAPI.csproj" />
-</Solution>
