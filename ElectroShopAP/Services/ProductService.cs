@@ -10,7 +10,7 @@ public class ProductService
     private readonly AppDbContext _db;
     public ProductService(AppDbContext db) => _db = db;
 
-    public async Task<List<Product>> GetFilteredAsync(
+    public async Task<List<ProductResponseDto>> GetFilteredAsync(
         string? search, Guid? categoryId, Guid? brandId,
         decimal? minPrice, decimal? maxPrice,
         int page, int pageSize)
@@ -35,6 +35,14 @@ public class ProductService
             .OrderBy(p => p.Name)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
+            .Select(p => new ProductResponseDto(
+                p.Id,
+                p.Name,
+                p.Price,
+                p.StockQuantity,
+                p.Category != null ? new CategoryResponseDto(p.Category.Id, p.Category.Name) : null,
+                p.Brand != null ? new BrandResponseDto(p.Brand.Id, p.Brand.Name) : null
+            ))
             .ToListAsync();
     }
 

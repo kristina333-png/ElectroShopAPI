@@ -27,7 +27,7 @@ public class ProductsController : ControllerBase
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Create(CreateProductDto dto)
     {
-        if (!ModelState.IsValid) return BadRequest(ModelState); 
+        if (!ModelState.IsValid) return BadRequest(ModelState);
         return Ok(await _products.CreateAsync(dto));
     }
 
@@ -35,7 +35,7 @@ public class ProductsController : ControllerBase
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Update(Guid id, UpdateProductDto dto)
     {
-        if (!ModelState.IsValid) return BadRequest(ModelState);  
+        if (!ModelState.IsValid) return BadRequest(ModelState);
         var updated = await _products.UpdateAsync(id, dto);
         return updated == null ? NotFound() : Ok(updated);
     }

@@ -1,4 +1,6 @@
-﻿namespace ElectroShopAPI.Models;
+﻿using System.Text.Json.Serialization; 
+
+namespace ElectroShopAPI.Models;
 
 public class Product
 {
@@ -10,5 +12,7 @@ public class Product
     public Category? Category { get; set; }
     public Guid BrandId { get; set; }
     public Brand? Brand { get; set; }
+
+    [JsonIgnore] 
     public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
 }
