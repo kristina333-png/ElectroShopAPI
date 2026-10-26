@@ -1,4 +1,5 @@
 ﻿using ElectroShopAPI.Data;
+using ElectroShopAPI.DTOs;
 using ElectroShopAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,8 +28,11 @@ public class BrandsController : ControllerBase
 
     [HttpPost]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> Create([FromBody] Brand brand)
+    public async Task<IActionResult> Create([FromBody] CreateBrandDto dto)
     {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+
+        var brand = new Brand { Name = dto.Name };
         _db.Brands.Add(brand);
         await _db.SaveChangesAsync();
         return CreatedAtAction(nameof(GetById), new { id = brand.Id }, brand);
@@ -36,10 +40,14 @@ public class BrandsController : ControllerBase
 
     [HttpPut("{id:guid}")]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> Update(Guid id, [FromBody] Brand brand)
+    public async Task<IActionResult> Update(Guid id, [FromBody] CreateBrandDto dto)
     {
-        if (id != brand.Id) return BadRequest();
-        _db.Entry(brand).State = EntityState.Modified;
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+
+        var brand = await _db.Brands.FindAsync(id);
+        if (brand == null) return NotFound();
+
+        brand.Name = dto.Name;
         await _db.SaveChangesAsync();
         return NoContent();
     }
@@ -50,6 +58,10 @@ public class BrandsController : ControllerBase
     {
         var brand = await _db.Brands.FindAsync(id);
         if (brand == null) return NotFound();
+
+        if (await _db.Products.AnyAsync(p => p.BrandId == id))
+            return BadRequest(new { error = "Нельзя удалить бренд, так как к нему привязаны товары." });
+
         _db.Brands.Remove(brand);
         await _db.SaveChangesAsync();
         return NoContent();

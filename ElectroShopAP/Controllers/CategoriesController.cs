@@ -1,4 +1,5 @@
 ﻿using ElectroShopAPI.Data;
+using ElectroShopAPI.DTOs;
 using ElectroShopAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,8 +28,11 @@ public class CategoriesController : ControllerBase
 
     [HttpPost]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> Create([FromBody] Category category)
+    public async Task<IActionResult> Create([FromBody] CreateCategoryDto dto)
     {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+
+        var category = new Category { Name = dto.Name };
         _db.Categories.Add(category);
         await _db.SaveChangesAsync();
         return CreatedAtAction(nameof(GetById), new { id = category.Id }, category);
@@ -36,10 +40,14 @@ public class CategoriesController : ControllerBase
 
     [HttpPut("{id:guid}")]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> Update(Guid id, [FromBody] Category category)
+    public async Task<IActionResult> Update(Guid id, [FromBody] CreateCategoryDto dto)
     {
-        if (id != category.Id) return BadRequest();
-        _db.Entry(category).State = EntityState.Modified;
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+
+        var category = await _db.Categories.FindAsync(id);
+        if (category == null) return NotFound();
+
+        category.Name = dto.Name;
         await _db.SaveChangesAsync();
         return NoContent();
     }
@@ -50,6 +58,10 @@ public class CategoriesController : ControllerBase
     {
         var category = await _db.Categories.FindAsync(id);
         if (category == null) return NotFound();
+
+        if (await _db.Products.AnyAsync(p => p.CategoryId == id))
+            return BadRequest(new { error = "Нельзя удалить категорию, так как к ней привязаны товары." });
+
         _db.Categories.Remove(category);
         await _db.SaveChangesAsync();
         return NoContent();
